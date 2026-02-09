@@ -15,7 +15,7 @@ In vanilla Minecraft, typing "dia" in the creative search tab shows all diamond 
 
 | Mode | Behavior | Example |
 |------|----------|---------|
-| **Easy** | Fuzzy matching — small typos and near-complete words are accepted | "zombi" matches "Zombie" |
+| **Easy** | Fuzzy matching — missing middle letters are accepted, but trailing letters must be typed | "zomie" matches "Zombie", but "zombi" does not |
 | **Medium** (default) | Exact words, case-insensitive | "zombie" matches "Zombie" |
 | **Hard** | Exact words, case-sensitive | Only "Zombie" matches "Zombie" |
 
@@ -94,7 +94,8 @@ scripts/run-client.sh
    - Clear the search — all items return
 5. Test commands by pressing T to open chat:
    - Type `/spellingbee` to see the current status
-   - Type `/spellingbee difficulty easy` then search for "zombi" — Zombie items should appear
+   - Type `/spellingbee difficulty easy` then search for "zomie" — Zombie items should appear with "Almost!" feedback
+   - Still in easy mode, search for "zombi" — nothing appears (missing trailing letters require completion)
    - Type `/spellingbee difficulty hard` then search for "zombie" (lowercase) — nothing appears; "Zombie" (capitalized) works
    - Type `/spellingbee off` to disable and confirm vanilla search behavior returns
 
@@ -145,7 +146,6 @@ spelling-bee-craft/
 │       └── java/com/spellingbeecraft/search/
 │           ├── WordMatcherTest.java
 │           └── ItemFilterTest.java
-└── spelling-bee-craft-prd.md     # Product requirements document
 ```
 
 ## Configuration
