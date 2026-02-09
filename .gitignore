@@ -1,0 +1,29 @@
+# gradle
+.gradle/
+build/
+out/
+classes/
+
+# eclipse
+*.launch
+
+# idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+.vscode/
+
+# macos
+*.DS_Store
+
+# fabric
+run/
+*.log
+
+# java
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar

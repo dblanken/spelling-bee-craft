@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "spellingbeecraft",
+  "version": "${version}",
+  "name": "Spelling Bee Craft",
+  "description": "Modifies creative mode search to require complete word spelling, helping kids learn to spell properly.",
+  "authors": [
+    "Spelling Bee Craft Contributors"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/spellingbeecraft/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "com.spellingbeecraft.SpellingBeeCraftMod"
+    ],
+    "client": [
+      "com.spellingbeecraft.SpellingBeeCraftClient"
+    ]
+  },
+  "mixins": [
+    "spellingbeecraft.mixins.json",
+    {
+      "config": "spellingbeecraft.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.9",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

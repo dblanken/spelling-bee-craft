@@ -1,0 +1,22 @@
+{
+  "spellingbeecraft.name": "Spelling Bee Craft",
+  "spellingbeecraft.command.enabled": "Spelling Bee Craft: Enabled",
+  "spellingbeecraft.command.disabled": "Spelling Bee Craft: Disabled",
+  "spellingbeecraft.command.difficulty_set": "Spelling Bee Craft: Difficulty set to %s",
+  "spellingbeecraft.command.status": "Spelling Bee Craft: %s | Difficulty: %s",
+  "spellingbeecraft.command.help.title": "Spelling Bee Craft Commands:",
+  "spellingbeecraft.command.help.on": "  /spellingbee on - Enable the mod",
+  "spellingbeecraft.command.help.off": "  /spellingbee off - Disable the mod",
+  "spellingbeecraft.command.help.difficulty": "  /spellingbee difficulty <easy|medium|hard> - Set difficulty",
+  "spellingbeecraft.command.help.help": "  /spellingbee help - Show this help message",
+  "spellingbeecraft.command.help.status": "  /spellingbee - Show current status",
+  "spellingbeecraft.search.hint": "Type complete words to search",
+  "spellingbeecraft.search.no_matches": "No items match \"%s\"",
+  "spellingbeecraft.search.found": "Found %d items",
+  "spellingbeecraft.difficulty.easy": "Easy",
+  "spellingbeecraft.difficulty.easy.desc": "Fuzzy matching (small typos allowed)",
+  "spellingbeecraft.difficulty.medium": "Medium",
+  "spellingbeecraft.difficulty.medium.desc": "Exact words, case-insensitive",
+  "spellingbeecraft.difficulty.hard": "Hard",
+  "spellingbeecraft.difficulty.hard.desc": "Exact words, case-sensitive"
+}
