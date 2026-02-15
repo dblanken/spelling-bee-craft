@@ -102,4 +102,37 @@ class ItemFilterTest {
         assertEquals(1, result.size());
         assertEquals("Cave-Spider Spawn Egg", result.get(0));
     }
+
+    @Test
+    void filterAndReportFuzzyMatchesInEasyMode() {
+        // "zombe" is a single-deletion fuzzy match for "Zombie"
+        SearchResult result = filter.filterAndReport(items, identity, "zombe", DifficultyMode.EASY);
+        assertEquals(SearchResult.Status.FUZZY_MATCHES, result.getStatus());
+        assertTrue(result.getMatchCount() > 0);
+    }
+
+    @Test
+    void blankWhitespaceQueryReturnsAllItems() {
+        List<String> result = filter.filterItems(items, identity, "   ", DifficultyMode.MEDIUM);
+        assertEquals(items.size(), result.size());
+    }
+
+    @Test
+    void filterAndReportWhitespaceQueryReturnsEmptyQueryStatus() {
+        SearchResult result = filter.filterAndReport(items, identity, "   ", DifficultyMode.MEDIUM);
+        assertEquals(SearchResult.Status.EMPTY_QUERY, result.getStatus());
+    }
+
+    @Test
+    void customNameExtractorWithNonStringType() {
+        record Item(String name, int id) {}
+        List<Item> typedItems = List.of(
+                new Item("Oak Planks", 1),
+                new Item("Birch Planks", 2),
+                new Item("Stone Bricks", 3)
+        );
+        List<Item> result = filter.filterItems(typedItems, Item::name, "oak", DifficultyMode.MEDIUM);
+        assertEquals(1, result.size());
+        assertEquals("Oak Planks", result.get(0).name());
+    }
 }
