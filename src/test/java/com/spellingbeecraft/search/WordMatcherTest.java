@@ -2,8 +2,10 @@ package com.spellingbeecraft.search;
 
 import com.spellingbeecraft.config.DifficultyMode;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static com.spellingbeecraft.search.WordMatcher.MatchType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WordMatcherTest {
@@ -109,5 +111,96 @@ class WordMatcherTest {
     @Test
     void mediumHyphenInUserInput() {
         assertTrue(matcher.matches("cave-spider", "Cave Spider", DifficultyMode.MEDIUM));
+    }
+
+    @Nested
+    class MatchTypeReturnValues {
+
+        @Test
+        void mediumExactMatchReturnsExact() {
+            assertEquals(EXACT, matcher.matchType("oak", "Oak Planks", DifficultyMode.MEDIUM));
+        }
+
+        @Test
+        void mediumPartialWordReturnsNone() {
+            assertEquals(NONE, matcher.matchType("oa", "Oak Planks", DifficultyMode.MEDIUM));
+        }
+
+        @Test
+        void easyExactMatchReturnsExact() {
+            assertEquals(EXACT, matcher.matchType("zombie", "Zombie Spawn Egg", DifficultyMode.EASY));
+        }
+
+        @Test
+        void easySingleDeletionReturnsFuzzy() {
+            assertEquals(FUZZY, matcher.matchType("zombe", "Zombie Spawn Egg", DifficultyMode.EASY));
+        }
+
+        @Test
+        void easyBadSpellingReturnsNone() {
+            assertEquals(NONE, matcher.matchType("zambie", "Zombie Spawn Egg", DifficultyMode.EASY));
+        }
+
+        @Test
+        void hardExactCaseReturnsExact() {
+            assertEquals(EXACT, matcher.matchType("Zombie", "Zombie Spawn Egg", DifficultyMode.HARD));
+        }
+
+        @Test
+        void hardWrongCaseReturnsNone() {
+            assertEquals(NONE, matcher.matchType("zombie", "Zombie Spawn Egg", DifficultyMode.HARD));
+        }
+
+        @Test
+        void emptyInputReturnsExact() {
+            assertEquals(EXACT, matcher.matchType("", "Oak Planks", DifficultyMode.MEDIUM));
+        }
+    }
+
+    @Nested
+    class EasyModeLevenshteinPath {
+
+        @Test
+        void longWordSingleSubstitutionFuzzyMatches() {
+            // "enchantmant" vs "enchantment" — distance 1, similarity ~0.91
+            assertTrue(matcher.matches("enchantmant", "Enchantment Table", DifficultyMode.EASY));
+            assertEquals(FUZZY, matcher.matchType("enchantmant", "Enchantment Table", DifficultyMode.EASY));
+        }
+
+        @Test
+        void shortWordSingleSubstitutionDoesNotMatch() {
+            // "oat" vs "oak" — distance 1, similarity ~0.67, below threshold
+            assertFalse(matcher.matches("oat", "Oak Planks", DifficultyMode.EASY));
+        }
+    }
+
+    @Nested
+    class EdgeCases {
+
+        @Test
+        void singleCharMatchesSingleCharItemWord() {
+            assertTrue(matcher.matches("a", "A", DifficultyMode.MEDIUM));
+        }
+
+        @Test
+        void singleCharDoesNotMatchDifferentChar() {
+            assertFalse(matcher.matches("a", "B", DifficultyMode.MEDIUM));
+        }
+
+        @Test
+        void extraSpacesInInput() {
+            assertTrue(matcher.matches("  oak   planks  ", "Oak Planks", DifficultyMode.MEDIUM));
+        }
+
+        @Test
+        void queryWithMoreWordsThanItemName() {
+            assertFalse(matcher.matches("oak planks extra", "Oak Planks", DifficultyMode.MEDIUM));
+        }
+
+        @Test
+        void duplicateQueryWordMatchesItemWithWordOnce() {
+            // each user word independently finds a match — "oak" matches "Oak" both times
+            assertTrue(matcher.matches("oak oak", "Oak Planks", DifficultyMode.MEDIUM));
+        }
     }
 }
