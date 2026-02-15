@@ -27,9 +27,23 @@ public class ItemFilter {
             return SearchResult.emptyQuery();
         }
 
-        List<T> filtered = filterItems(items, nameExtractor, userInput, difficulty);
+        boolean anyFuzzy = false;
+        List<T> filtered = new java.util.ArrayList<>();
+        for (T item : items) {
+            WordMatcher.MatchType mt = wordMatcher.matchType(userInput, nameExtractor.apply(item), difficulty);
+            if (mt != WordMatcher.MatchType.NONE) {
+                filtered.add(item);
+                if (mt == WordMatcher.MatchType.FUZZY) {
+                    anyFuzzy = true;
+                }
+            }
+        }
+
         if (filtered.isEmpty()) {
             return SearchResult.noMatches(userInput);
+        }
+        if (anyFuzzy) {
+            return SearchResult.fuzzyMatches(filtered.size(), userInput);
         }
         return SearchResult.hasMatches(filtered.size(), userInput);
     }
